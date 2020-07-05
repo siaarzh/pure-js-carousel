@@ -1,0 +1,131 @@
+.slider {
+  width: 300px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.wrapper {
+  overflow: hidden;
+  position: relative;
+  background: #222;
+  z-index: 1;
+}
+
+#items {
+  width: 10000px;
+  position: relative;
+  top: 0;
+  left: -300px;
+}
+
+#items.shifting {
+  -webkit-transition: left .2s ease-out;
+  transition: left .2s ease-out;
+}
+
+.slide {
+  width: 300px;
+  height: 200px;
+  cursor: pointer;
+  float: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+  position: relative;
+  background: #FFCF47;
+}
+
+.slide--1 {
+  background: #1d419f;
+}
+
+.slide--2 {
+  background: #203d3d;
+}
+
+.slide--3 {
+  background: #a68ee0;
+}
+
+.slide--4 {
+  background: #c227c5;
+}
+
+.slide--5 {
+  background: #4a977c;
+}
+
+.control {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 20px;
+  margin-top: -20px;
+  -webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+          box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 28px;
+  text-align: center;
+  line-height: 28px;
+}
+
+.control--prev, .control--next {
+  background-size: 22px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.control--prev {
+  left: -20px;
+}
+
+.control--next {
+  right: -20px;
+}
+
+.chevron--left::before, .chevron--right::before {
+  border-style: solid;
+  border-width: 0.05em 0.05em 0 0;
+  content: '';
+  display: inline-block;
+  height: 0.45em;
+  left: 0.15em;
+  position: relative;
+  top: 0.45em;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  vertical-align: top;
+  width: 0.45em;
+}
+
+.chevron--left::before {
+  -webkit-transform: rotate(-135deg);
+          transform: rotate(-135deg);
+}
+
+.chevron--right::before {
+  left: -0.15em;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+/*# sourceMappingURL=style.css.map */
