@@ -12,13 +12,13 @@ function slide(
   const threshold = 100;
   const slides = items.getElementsByClassName('slide');
   const slidesLength = slides.length;
-  const  slideSize = (items.getElementsByClassName('slide')[0] as HTMLElement)
-      .offsetWidth;
-  const  firstSlide = slides[0];
-  const  lastSlide = slides[slidesLength - 1];
-  const  cloneFirst = firstSlide.cloneNode(true);
-  const  cloneLast = lastSlide.cloneNode(true);
-  
+  const slideSize = (items.getElementsByClassName('slide')[0] as HTMLElement)
+    .offsetWidth;
+  const firstSlide = slides[0];
+  const lastSlide = slides[slidesLength - 1];
+  const cloneFirst = firstSlide.cloneNode(true);
+  const cloneLast = lastSlide.cloneNode(true);
+
   let index = 0;
   let allowShift = true;
 
@@ -69,11 +69,10 @@ function slide(
 
   function dragEnd() {
     posFinal = items.offsetLeft;
-    
+
     console.log('initial position: ', posInitial);
     console.log('');
-    
-    
+
     if (posFinal - posInitial < -threshold) {
       shiftSlide(1, 'drag');
     } else if (posFinal - posInitial > threshold) {
@@ -87,7 +86,6 @@ function slide(
   }
 
   function dragStart(e: TouchEvent | MouseEvent) {
-
     const dragEvent = e || window.event;
     dragEvent.preventDefault();
     posInitial = items.offsetLeft;
