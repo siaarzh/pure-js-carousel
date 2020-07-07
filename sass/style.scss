@@ -1,44 +1,74 @@
-.slider {
-  width: 300px;
-  height: 200px;
+$sliderWidth: 300px;
+$cardWidth: 300px;
+$cardHeight: 200px;
+$cardCount: 5;
+$cardGap: 1rem;           // always set units! (px | em | rem | etc...)
+$cardBorderRadius: 1rem;  // always set units! (px | em | rem | etc...)
+
+body {
+  font-size: 16px;
+}
+
+@mixin center_VH {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
+.slider {
+  // dimensions
+  width: $sliderWidth;
+  height: $cardHeight;
+  // position in center
+  @include center_VH();
+}
+
 .wrapper {
+  // frame and hide cards
   overflow: hidden;
+  
   position: relative;
-  background: #222;
+  background: transparent;
   z-index: 1;
 }
 
-#items {
-  width: 10000px;
+.items {
+  width: calc(#{$cardCount + 3} * #{$cardWidth});
   position: relative;
   top: 0;
-  left: -300px;
+  left: #{-$cardWidth};
 }
 
-#items.shifting {
+.items.shifting {
   transition: left .2s ease-out;
 }
 
 .slide {
-  width: 300px;
-  height: 200px;
+  // card elements
+  width: calc(#{$cardWidth} - #{$cardGap});
+  height: $cardHeight;
   cursor: pointer;
-  float: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   transition: all 1s;
   position: relative;
-  background: #FFCF47;
+  // place elements next to each other and remove space in-between
+  // see: https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+  float: left;
 
-  @for $i from 1 through 5 {
+  // align and style text
+  text-align: center;
+  line-height: $cardHeight;
+  vertical-align: middle;
+  color: white;
+  font-size: 3rem;
+
+  // add gaps
+  border-radius: $cardBorderRadius;
+  border: 0px solid transparent;
+  margin: 0 calc(#{$cardGap / 2});
+  padding: 0;
+
+  @for $i from 1 through $cardCount {
     &--#{$i} {
       background: rgb(random(255), random(255), random(255));
     }

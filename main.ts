@@ -9,12 +9,15 @@ function slide(
   prevBtn: HTMLElement,
   nextBtn: HTMLElement
 ) {
-  const threshold = 100;
   const slides = items.getElementsByClassName('slide');
   const slidesLength = slides.length;
   const slideSize = (items.getElementsByClassName('slide')[0] as HTMLElement)
     .offsetWidth;
   const firstSlide = slides[0];
+  const margin =
+    parseInt(window.getComputedStyle(firstSlide, null).marginLeft, 10) * 2;
+  const threshold =
+    parseInt(window.getComputedStyle(firstSlide, null).width, 10) / 2;
   const lastSlide = slides[slidesLength - 1];
   const cloneFirst = firstSlide.cloneNode(true);
   const cloneLast = lastSlide.cloneNode(true);
@@ -30,24 +33,25 @@ function slide(
   const itemsStyle = items.style;
 
   function dragAction(e: TouchEvent | MouseEvent) {
-    // e = e || window.event;
+    console.log('executing dragAction()');
+    // moves cards at every drag or move event emission
 
     if (e instanceof TouchEvent) {
       // on touch device
       posX2 = posX1 - e.touches[0].clientX;
-      posX1 = e.touches[0].clientX;
     }
 
     if (e instanceof MouseEvent) {
       // on desktop
       posX2 = posX1 - e.clientX;
-      posX1 = e.clientX;
     }
 
-    itemsStyle.left = `${items.offsetLeft - posX2}px`;
+    itemsStyle.left = `${posInitial - posX2}px`;
   }
 
   function shiftSlide(dir: number, action?: string) {
+    // moves items exactly one item left or right depending on direction
+    console.log('executing shiftSlide()');
     items.classList.add('shifting');
 
     if (allowShift) {
@@ -56,10 +60,10 @@ function slide(
       }
 
       if (dir === 1) {
-        itemsStyle.left = `${posInitial - slideSize}px`;
+        itemsStyle.left = `${posInitial - slideSize - margin}px`;
         index += 1;
       } else if (dir === -1) {
-        itemsStyle.left = `${posInitial + slideSize}px`;
+        itemsStyle.left = `${posInitial + slideSize + margin}px`;
         index -= 1;
       }
     }
@@ -68,10 +72,9 @@ function slide(
   }
 
   function dragEnd() {
+    console.log('executing dragEnd()');
+    // handles final position
     posFinal = items.offsetLeft;
-
-    console.log('initial position: ', posInitial);
-    console.log('');
 
     if (posFinal - posInitial < -threshold) {
       shiftSlide(1, 'drag');
@@ -86,33 +89,45 @@ function slide(
   }
 
   function dragStart(e: TouchEvent | MouseEvent) {
-    const dragEvent = e || window.event;
-    dragEvent.preventDefault();
+    // Handles starting position and pointer tracking for dragging cards.
+    console.log('executing dragStart()');
+
+    const startEvent = e || window.event;
+    startEvent.preventDefault();
     posInitial = items.offsetLeft;
 
-    if (dragEvent instanceof TouchEvent) {
+    if (startEvent instanceof TouchEvent) {
       // on touch device
-      posX1 = dragEvent.touches[0].clientX;
+      // dragging is handled by touchmove, which only exists if touchstart event
+      // exists
+      posX1 = startEvent.touches[0].clientX;
     }
 
-    if (dragEvent instanceof MouseEvent) {
+    if (startEvent instanceof MouseEvent) {
       // on desktop
-      posX1 = dragEvent.clientX;
+      // dragging is handled by onmousemove, which is always true, therefore
+      // we listen to onmouseup inside a if(mousedown) clause
+      posX1 = startEvent.clientX;
       document.onmouseup = dragEnd;
       document.onmousemove = dragAction;
     }
   }
 
   function checkIndex() {
+    console.log('executing checkIndex()');
     items.classList.remove('shifting');
 
     if (index === -1) {
-      itemsStyle.left = `${-(slidesLength * slideSize)}px`;
+      // index -1 is last slide but appended to the start
+      // move all items left so you see last slide
+      itemsStyle.left = `${-(slidesLength * (slideSize + margin))}px`;
       index = slidesLength - 1;
     }
 
     if (index === slidesLength) {
-      itemsStyle.left = `${-(1 * slideSize)}px`;
+      // index slideLength is first slide but appended to the end
+      // reset position to -slideWidth px, which will show first slide
+      itemsStyle.left = `${-(1 * (slideSize + margin))}px`;
       index = 0;
     }
 
@@ -126,7 +141,6 @@ function slide(
 
   // Mouse and Touch events
   items.addEventListener('mousedown', dragStart);
-  // items.onmousedown = dragStart;
 
   // Touch events
   items.addEventListener('touchstart', dragStart);
